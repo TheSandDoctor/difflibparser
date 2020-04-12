@@ -39,8 +39,13 @@ class DifflibParser:
 
     def __iter__(self):
         return self
+    
+    # Python 2 compatibility
+    def next(self):
+        return self.__next__()
 
-    def __next__(self):  # python3
+    # Python 3 way
+    def __next__(self):
         result = {}
         if self.__currentLineno >= len(self.__diff):
             raise StopIteration
@@ -65,8 +70,6 @@ class DifflibParser:
         self.__currentLineno += 1
         return result
 
-    next = __next__  # for Python 2
-    
     def __tryGetIncrementalChange(self, lineno):
         lineOne = self.__diff[lineno] if lineno < len(self.__diff) else None
         lineTwo = self.__diff[lineno + 1] if lineno + 1 < len(self.__diff) else None
